@@ -8978,7 +8978,7 @@ reference,mvreference,inreference]{volume}{%
 %    \begin{macrocode}
 \newtoggle{blx@ox@crossrefinbib}
 \DeclareBiblatexOption{global,type,entry}{crossrefinbib}[true]{%
-	\settoggle{bls@ox@crossrefinbib}{#1}}
+	\settoggle{blx@ox@crossrefinbib}{#1}}
 %    \end{macrocode}
 %
 % Our |inbook| driver modifies the standard one in just the same way as
@@ -8999,6 +8999,7 @@ reference,mvreference,inreference]{volume}{%
   togl {blx@ox@crossrefinbib} and not test {\iffieldundef{crossref}}
   }{%
   \cite{\strfield{crossref}}%
+  \setunit{\addcolon\addspace}
   }{%
   \usebibmacro{bybookauthor}%
   \newunit\newblock
@@ -9016,8 +9017,8 @@ reference,mvreference,inreference]{volume}{%
   \printfield{note}%
   \newunit\newblock
   \usebibmacro{series+number+edition+publisher+location+date}%
-  }%
   \newunit\newblock
+  }%
   \usebibmacro{chapter+pages}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
@@ -9105,6 +9106,12 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{in:}%
+  \ifboolexpe{%
+  togl {blx@ox@crossrefinbib} and not test {\iffieldundef{crossref}}
+  }{%
+  \cite{\strfield{crossref}}%
+  \setunit{\addcolon\addspace}
+  }{%
   \usebibmacro{bybookauthor}%
   \newunit\newblock
   \usebibmacro{maintitle+booktitle}%
@@ -9122,6 +9129,7 @@ reference,mvreference,inreference]{volume}{%
   \newunit\newblock
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
+  }
   \usebibmacro{chapter+pages}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
@@ -9255,6 +9263,12 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{in:}%
+  \ifboolexpe{%
+  togl {blx@ox@crossrefinbib} and not test {\iffieldundef{crossref}}
+  }{%
+  \cite{\strfield{crossref}}%
+  \setunit{\addcolon\addspace}
+  }{% 
   \usebibmacro{bookeditor}%
   \newunit\newblock
   \usebibmacro{maintitle+booktitle}%
@@ -9270,6 +9284,7 @@ reference,mvreference,inreference]{volume}{%
   \newunit\newblock%
   \usebibmacro{series+number+edition+publisher+location+date}%
   \newunit\newblock
+  }%
   \usebibmacro{chapter+pages}%
   \newunit\newblock
   \iftoggle{bbx:isbn}
