@@ -127,3 +127,12 @@ sympy-plots-for-*.tex/
 
 # Compiled files
 biblatex-oxref*.zip
+*.lbx
+*.tex
+*.cbx
+*.dbx
+*.bbx
+*.in
+*.listing
+*.bib
+*.ins

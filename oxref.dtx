@@ -8973,6 +8973,14 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{finentry}}
 %    \end{macrocode}
 %
+% We provide a new \crossrefinbib\ option which is applicable to all the `in' entrytypes.
+%
+%    \begin{macrocode}
+\newtoggle{blx@ox@crossrefinbib}
+\DeclareBiblatexOption{global,type,entry}{crossrefinbib}[true]{%
+	\settoggle{bls@ox@crossrefinbib}{#1}}
+%    \end{macrocode}
+%
 % Our |inbook| driver modifies the standard one in just the same way as
 % our |mvbook| driver modifies the standard |book|.
 %
@@ -8987,6 +8995,11 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{byauthor}%
   \newunit\newblock
   \usebibmacro{in:}%
+  \ifboolexpe{%
+  togl {blx@ox@crossrefinbib} and not test {\iffieldundef{crossref}}
+  }{%
+  \cite{\strfield{crossref}}%
+  }{%
   \usebibmacro{bybookauthor}%
   \newunit\newblock
   \usebibmacro{maintitle+booktitle}%
@@ -9003,6 +9016,7 @@ reference,mvreference,inreference]{volume}{%
   \printfield{note}%
   \newunit\newblock
   \usebibmacro{series+number+edition+publisher+location+date}%
+  }%
   \newunit\newblock
   \usebibmacro{chapter+pages}%
   \newunit\newblock
