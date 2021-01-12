@@ -11658,10 +11658,14 @@ reference,mvreference,inreference]{volume}{%
 % an annotation, rather than using a dedicated field. This greatly
 % simplifies the code used elsewhere.
 %
+% We also allow a 'book' descriptor so that the titles of unpublished
+% books will be set in italics.
+%
 %    \begin{macrocode}
 \DeclareFieldFormat[manuscript,unpublished]{title}{%
   \def\currentfield{title}%
-  \iffieldannotation{descriptor}{#1}{\mkbibquote{#1\isdot}}%
+  \iffieldannotation{descriptor}{#1}{%
+     \iffieldannotation{book}{\mkbibemph{#1}}{\mkbibquote{#1\isdot}}}%
   \undef\currentfield}
 \DeclareFieldFormat{columns+layer}{\mkbibparens{#1}}
 \DeclareFieldFormat{columns}{\mkbibparens{#1}}
