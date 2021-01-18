@@ -1,6 +1,6 @@
 % \iffalse
 %<*internal|bbx|cbx|dbx|lbx|doc>
-\def\Version{2020/10/19 v2.1}
+\def\Version{2021/01/18 v2.2}
 %</internal|bbx|cbx|dbx|lbx|doc>
 %<*internal>
 \iffalse
@@ -166,7 +166,7 @@ See:     http://www.latex-project.org/lppl.txt
 \endpreamble
 \postamble
 
-Copyright (C) 2016–2020 Alex Ball
+Copyright (C) 2016–2021 Alex Ball
 \endpostamble
 
 \usedir{tex/latex/\jobname}
@@ -842,7 +842,7 @@ first two steps.
 
 ## Licence
 
-Copyright 2016–2020 Alex Ball.
+Copyright 2016–2021 Alex Ball.
 
 This work consists of the documented LaTeX file oxref.dtx and a Makefile.
 
@@ -969,6 +969,10 @@ The style has some options additional to the regular \pkg{biblatex} ones:
 
 \begin{docKey}{nopublisher}{}{no value, initially unset}
   Removes publisher name from all entries. Once set, this option cannot be overridden.
+\end{docKey}
+
+\begin{docKey}{norelatedin}{=\val{true}|\val{false}}{default \val{true}, initially \val{false}}
+  Suppresses the printing of the \code{in} localization string in circumstances where it would appear directly following a related string such as \enquote{originally published as}. It can also be set on a per-type and per-entry basis. The effects of this key are not well tested, so do please get in touch (see below) if you encounter problems with it.
 \end{docKey}
 
 \begin{docKey}{relationpunct}{=\val{period}|\val{comma}|\val{semicolon}|\val{colon}|\val{space}}{default \val{semicolon}, initially \val{semicolon}}
@@ -6920,7 +6924,8 @@ will trigger the use of parentheses.
 
 \defbibnote{preface}{This document uses the \pkg{biblatex} option \key{backref}
 to demonstrate how entries can be marked with the page(s) on which they were
-cited.}
+cited. The format of the back references comes from \pkg{biblatex} itself
+rather than \pkg[biblatex]{oxref}.}
 
 %<n|a|y>\printbibliography[notcategory=hidden]
 %<m>\printbibliography[notcategory=hidden,prenote=preface]
@@ -7124,11 +7129,7 @@ cited.}
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@nametitle}\toggletrue{blx@ox@nametitle}%
-\DeclareBibliographyOption{usenametitles}[true]{%
-  \settoggle{blx@ox@nametitle}{#1}}
-\DeclareTypeOption{usenametitles}[true]{%
-  \settoggle{blx@ox@nametitle}{#1}}
-\DeclareEntryOption{usenametitles}[true]{%
+\DeclareBiblatexOption{global,type,entry}{usenametitles}[true]{%
   \settoggle{blx@ox@nametitle}{#1}}
 %    \end{macrocode}
 %
@@ -7907,11 +7908,7 @@ cited.}
   \ifbibstring{#1}{\bibstring{#1}}{#1\isdot}%
 }
 \newtoggle{blx@ox@timefirst}
-\DeclareBibliographyOption{timefirst}[true]{%
-  \settoggle{blx@ox@timefirst}{#1}}
-\DeclareTypeOption{timefirst}[true]{%
-  \settoggle{blx@ox@timefirst}{#1}}
-\DeclareEntryOption{timefirst}[true]{%
+\DeclareBiblatexOption{global,type,entry}{timefirst}[true]{%
   \settoggle{blx@ox@timefirst}{#1}}
 \newbibmacro*{date+time}{%
   \ifboolexpr{
@@ -8349,17 +8346,9 @@ cited.}
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@varissuedate}
-\DeclareBibliographyOption{varissuedate}[true]{%
+\DeclareBiblatexOption{global,type,entry}{varissuedate}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareTypeOption{varissuedate}[true]{%
-  \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareEntryOption{varissuedate}[true]{%
-  \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareBibliographyOption{issuedate-plain}[true]{%
-  \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareTypeOption{issuedate-plain}[true]{%
-  \settoggle{blx@ox@varissuedate}{#1}}
-\DeclareEntryOption{issuedate-plain}[true]{%
+\DeclareBiblatexOption{global,type,entry}{issuedate-plain}[true]{%
   \settoggle{blx@ox@varissuedate}{#1}}
 \renewbibmacro*{issue+date}{%
   \ifboolexpr{
@@ -8442,7 +8431,6 @@ cited.}
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -8473,7 +8461,6 @@ cited.}
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -8535,7 +8522,6 @@ cited.}
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -8893,7 +8879,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -8963,7 +8948,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9028,7 +9012,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9082,7 +9065,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9139,7 +9121,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9179,7 +9160,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9237,7 +9217,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9294,7 +9273,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9346,7 +9324,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9391,7 +9368,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9452,7 +9428,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9508,7 +9483,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9599,7 +9573,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9651,7 +9624,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -9895,7 +9867,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -10014,7 +9985,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -10077,7 +10047,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -10221,7 +10190,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -10288,7 +10256,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -10435,7 +10402,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -10550,7 +10516,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{url+urldate}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -10628,7 +10593,6 @@ reference,mvreference,inreference]{volume}{%
   \usebibmacro{doi+eprint+url}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -10658,9 +10622,7 @@ reference,mvreference,inreference]{volume}{%
     \setboolean{bbx@paryear-essential}{#1}}
 \newtoggle{blx@ox@nopostnotedelim}
 \newtoggle{bbx:altcourt}
-\DeclareBibliographyOption{court-plain}[true]{%
-  \settoggle{bbx:altcourt}{#1}}
-\DeclareEntryOption{court-plain}[true]{%
+\DeclareBiblatexOption{global,type,entry}{court-plain}[true]{%
   \settoggle{bbx:altcourt}{#1}}
 \newtoggle{bbx@ecliuse}
 \newtoggle{bbx@eclionly}
@@ -11794,7 +11756,6 @@ reference,mvreference,inreference]{volume}{%
   \iftoggle{bbx:url}{%
     \usebibmacro{url+urldate}%
   }{}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}{%
     \usebibmacro{related:init}%
     \usebibmacro{related}%
@@ -11863,7 +11824,6 @@ reference,mvreference,inreference]{volume}{%
     {}%
   \newunit\newblock
   \usebibmacro{addendum+pubstate}%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -11902,7 +11862,6 @@ reference,mvreference,inreference]{volume}{%
      \usebibmacro{related}}
     {}%
 }{%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -11921,7 +11880,6 @@ reference,mvreference,inreference]{volume}{%
      \usebibmacro{related}}
     {}%
 }{%
-  \setunit{\relatedtypepunct}\newblock
   \iftoggle{bbx:related}
     {\usebibmacro{related:init}%
      \usebibmacro{related}}
@@ -11934,59 +11892,86 @@ reference,mvreference,inreference]{volume}{%
 % We provide an option for setting the relatedtype punctuation.
 %
 %    \begin{macrocode}
-\DeclareBibliographyOption[string]{relationpunct}[semicolon]{%
-  \ifcsdef{add#1}{%
-    \ifstrequal{#1}{space}{%
-      \renewcommand*{\relatedtypepunct}{\addspace}%
-    }{%
-      \renewcommand*{\relatedtypepunct}{\csuse{add#1}\space}}%
-  }{%
+\DeclareDelimFormat{begrelateddelimequals}{\addspace}
+\DeclareDelimFormat{begrelateddelimin}{\addcomma\space}
+\DeclareDelimFormat{begrelateddelimincludes}{\addcomma\space}
+\DeclareDelimFormat{begrelateddelimreprintfrom}{\addperiod\space}
+\DeclareDelimFormat{begrelateddelimreviewof}{\newunitpunct}
+\DeclareDelimFormat{begrelateddelimtranslationof}{\addspace}
+\DeclareDelimFormat{begrelateddelimmultivolume}{\newunitpunct}
+\DeclareDelimFormat{relateddelimmultivolume}{\newunitpunct}
+\newtoggle{blx@ox@success}
+\DeclareBiblatexOption{global,type}[string]{relationpunct}[semicolon]{%
+  \bgroup\blx@blxinit
+  \ifcsdef{add#1}{\global\toggletrue{blx@ox@success}}{%
+    \global\togglefalse{blx@ox@success}%
     \PackageError{biblatex-oxref}{%
       Invalid option 'relationpunct=#1'%
     }{%
       Valid values are 'dot', 'comma', 'semicolon', 'colon',\MessageBreak
-      'period', 'exclam', 'question', and 'space'.}}}
-\DeclareTypeOption[string]{relationpunct}[semicolon]{%
-  \ifcsdef{add#1}{%
-    \ifstrequal{#1}{space}{%
-      \renewcommand*{\relatedtypepunct}{\addspace}%
-    }{%
-      \renewcommand*{\relatedtypepunct}{\csuse{add#1}\space}}%
+      'period', 'exclam', 'question', and 'space'.}}%
+  \egroup
+  \iftoggle{blx@ox@success}{\ifstrequal{#1}{space}{%
+    \DeclareDelimFormat{begrelateddelim}{\addspace}%
   }{%
-    \PackageError{biblatex-oxref}{%
-      Invalid option 'relationpunct=#1'%
-    }{%
-      Valid values are 'dot', 'comma', 'semicolon', 'colon',\MessageBreak
-      'period', 'exclam', 'question', and 'space'.}}}
-\newtoggle{blx@ox@relpunctset}
+    \DeclareDelimFormat{begrelateddelim}{\csuse{add#1}\space}}%
+  }{}}
 \DeclareEntryOption[string]{relationpunct}[semicolon]{%
-  \ifcsdef{add#1}{%
-    \ifstrequal{#1}{space}{%
-      \renewcommand*{\relatedtypepunct}{\addspace}%
-    }{%
-      \renewcommand*{\relatedtypepunct}{\csuse{add#1}\space}}%
-    \toggletrue{blx@ox@relpunctset}
-  }{%
+  \bgroup\blx@blxinit
+  \ifcsdef{add#1}{\global\toggletrue{blx@ox@success}}{%
+    \global\togglefalse{blx@ox@success}%
     \PackageError{biblatex-oxref}{%
       Invalid option 'relationpunct=#1'%
     }{%
       Valid values are 'dot', 'comma', 'semicolon', 'colon',\MessageBreak
-      'period', 'exclam', 'question', and 'space'.}}}
+      'period', 'exclam', 'question', and 'space'.}}%
+  \egroup
+  \iftoggle{blx@ox@success}{\ifstrequal{#1}{space}{%
+    \DeclareDelimFormat{begrelateddelim}{\addspace}%
+    \DeclareDelimFormat{begrelateddelimequals}{\addspace}%
+    \DeclareDelimFormat{begrelateddelimin}{\addspace}%
+    \DeclareDelimFormat{begrelateddelimincludes}{\addspace}%
+    \DeclareDelimFormat{begrelateddelimreprintfrom}{\addspace}%
+    \DeclareDelimFormat{begrelateddelimreviewof}{\addspace}%
+    \DeclareDelimFormat{begrelateddelimtranslationof}{\addspace}%
+    \DeclareDelimFormat{begrelateddelimmultivolume}{\addspace}%
+  }{%
+    \DeclareDelimFormat{begrelateddelim}{\csuse{add#1}\space}%
+    \DeclareDelimFormat{begrelateddelimequals}{\csuse{add#1}\space}%
+    \DeclareDelimFormat{begrelateddelimin}{\csuse{add#1}\space}%
+    \DeclareDelimFormat{begrelateddelimincludes}{\csuse{add#1}\space}%
+    \DeclareDelimFormat{begrelateddelimreprintfrom}{\csuse{add#1}\space}%
+    \DeclareDelimFormat{begrelateddelimreviewof}{\csuse{add#1}\space}%
+    \DeclareDelimFormat{begrelateddelimtranslationof}{\csuse{add#1}\space}%
+    \DeclareDelimFormat{begrelateddelimmultivolume}{\csuse{add#1}\space}}%
+  }{}}
+\ExecuteBibliographyOptions{relationpunct}
 \newcounter{blx@ox@relitem}
 \xapptobibmacro{begrelated}{%
   \setcounter{blx@ox@relitem}{0}%
-  \iftoggle{blx@ox@relpunctset}{}{%
-    \iffieldequalstr{relatedtype}{in}{%
-      \setunit{\addcomma\space}}{}%
-    \iffieldequalstr{relatedtype}{reprintfrom}{%
-      \setunit{\addperiod\space}}{}%
-    \iffieldequalstr{relatedtype}{translationof}{%
-      \setunit{\addspace}}{}%
-    \iffieldequalstr{relatedtype}{multivolume}{%
-      \setunit{\addcomma\space}}{}%
-}}{}{\wlog{WARNING: biblatex-oxref failed to append to begrelated}}
-\DeclareDelimFormat{relateddelimmultivolume}{\newunitpunct}
-\DeclareDelimFormat{begrelateddelimmultivolume}{\newunitpunct}
+}{}{\wlog{WARNING: biblatex-oxref failed to append to begrelated}}
+%    \end{macrocode}
+%
+% We provide an option to prevent a related item beginning with "in".
+%
+%    \begin{macrocode}
+\newtoggle{blx@ox@norelin}
+\DeclareBiblatexOption{global,type,entry}{norelatedin}[true]{%
+  \settoggle{blx@ox@norelin}{#1}}
+\xapptobibmacro{begrelatedloop}{%
+  \iftoggle{blx@ox@norelin}{%
+    \renewbibmacro*{in:}{%
+      \ifboolexpr{
+        test {\ifnameundef{author}}
+        and
+        test {\ifnameundef{translator}}
+        and
+        test {\iffieldundef{title}}
+      }{}{%
+        \bibstring{in}%
+        \printunit{\intitlepunct}%
+      }}}{}%
+}{}{\wlog{WARNING: biblatex-oxref failed to append to begrelatedloop}}
 
 %    \end{macrocode}
 %
@@ -13057,11 +13042,7 @@ reference,mvreference,inreference]{volume}{%
 %
 %    \begin{macrocode}
 \newtoggle{blx@ox@nonodate}
-\DeclareBibliographyOption{nonodate}[true]{%
-  \settoggle{blx@ox@nonodate}{#1}}
-\DeclareTypeOption{nonodate}[true]{%
-  \settoggle{blx@ox@nonodate}{#1}}
-\DeclareEntryOption{nonodate}[true]{%
+\DeclareBiblatexOption{global,type,entry}{nonodate}[true]{%
   \settoggle{blx@ox@nonodate}{#1}}
 \newbibmacro*{labeldate}{%
   \ifboolexpr{
