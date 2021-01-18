@@ -8489,7 +8489,7 @@ cited.}
 % formatting for the rest of the entry.
 %
 %    \begin{macrocode}
-\DeclareFieldFormat[suppperiodical]{title}{%
+\DeclareFieldFormat[article,inbook,incollection,inproceedings,suppperiodical]{title}{%
   \def\currentfield{title}%
   \iffieldannotation{descriptor}{#1}{\mkbibquote{#1\isdot}}%
   \undef\currentfield}
